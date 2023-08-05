@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Usage: admin.sh up|down|shell
+echo "Usage: admin.sh up|down|build|ls|shell"
+# Get the running container name (if any)
+export CONTAINER=`docker container ls |grep php-6-steps |cut -c 124-`
+if [[ "$1" = "up" || "$1" = "start" ]]; then
+    docker run -d -p 8888:80 -v `pwd`:/home/tutorial php-6-steps
+elif [[ "$1" = "down" ]]; then
+    docker container stop $CONTAINER
+elif [[ "$1" = "build" ]]; then
+    docker build -t php-6-steps .
+elif [[ "$1" = "ls" ]]; then
+    docker container ls
+elif [[ "$1" = "shell" ]]; then
+    docker exec -it $CONTAINER /bin/bash
+fi

@@ -14,6 +14,11 @@ RUN \
     mv /etc/nginx/http.d/default.conf /etc/nginx/http.d/default.conf.old && \
     mkdir /var/www/html && \
     chown -R nginx /var/www
+RUN \
+    echo "Setting up Sqlite ..." && \
+    apk add sqlite3 && \
+    apk add php82-pdo && \
+    apk add php82-pdo_sqlite
 COPY default.conf /etc/nginx/http.d/default.conf
 COPY index.php /var/www/html/index.php
 COPY startup.sh /usr/sbin/startup.sh
