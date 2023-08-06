@@ -1,10 +1,12 @@
 <?php
 // connect form to database
+$msg   = '';
+$list  = [];
 $clean = [];
 $output = '';
 // database connection
 try {
-    include __DIR__ . '/connect_to_database.php';
+    include __DIR__ . '/Connect.php';
     $db = new Connect();
     if (!empty($_POST)) {
         // sanitize incoming data
@@ -14,9 +16,11 @@ try {
         // add form data to database
         $db->put($clean);
     }
+    // produce output
+    $list = $db->get();
 } catch (Throwable $t) {
     error_log(__FILE__ . ':' . $t->getMessage());
-    $output = 'ERROR: unable to connect to the database';
+    $msg = 'ERROR: unable to connect to the database';
 }
 ?>
 <h1>New User Info</h1>
@@ -28,6 +32,18 @@ Birth Date:&nbsp;<input type="date" name="dob" /><br />
 </form>
 <?php if (!empty($clean)) : ?>
 <hr />
-<h1>You Entered This:</h1>
-<?= implode(':', $clean); ?>
+You Entered This:&nbsp;
+<pre><?= implode(' : ', $clean); ?></pre>
 <?php endif; ?>
+<?php if (!empty($list)) : ?>
+<hr />
+<table>
+<tr><th>First</th><th>Last</th><th>DOB</th></tr>
+<?php foreach ($list as $row) : ?>
+    <tr><td>
+    <?= implode ('</td><td>', array_values($row)); ?>
+    </td></tr>
+<?php endforeach; ?>
+</table>
+<?php endif; ?>
+<?php if (!empty($msg)) echo $msg; ?>

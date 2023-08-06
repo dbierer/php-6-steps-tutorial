@@ -16,7 +16,7 @@ RUN \
     chown -R nginx /var/www
 RUN \
     echo "Setting up Sqlite ..." && \
-    apk add sqlite3 && \
+    apk add sqlite && \
     apk add php82-pdo && \
     apk add php82-pdo_sqlite
 COPY default.conf /etc/nginx/http.d/default.conf

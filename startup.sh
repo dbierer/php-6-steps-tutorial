@@ -1,7 +1,8 @@
 #!/bin/bash
 export VER=82
 ln -s /home/tutorial /var/www/html/tutorial
-
+chgrp -R nobody /home/tutorial/data
+chmod -R 775 /home/tutorial/data
 # Start the first process
 /usr/sbin/php-fpm$VER
 status=$?
